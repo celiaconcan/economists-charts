@@ -1,0 +1,47 @@
+---
+title: "class"
+author: "Celia Concannon"
+date: "4/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(ggthemes)
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+likes <- read_csv("http://infographics.economist.com/databank/Economist_corbyn.csv") %>%
+  clean_names() %>%
+  slice(1:6)
+```
+
+```{r}
+likes %>%
+  mutate(page = fct_relevel(page, c ("Saving Labour",
+                                     "Andy Burnham",
+                                     "Owen Smith",
+                                     "Momentum",
+                                     "Labour Party",
+                                     "Jeremy Corbyn"))) %>%
+  ggplot(aes(x = page, y = average_number_of_likes_per_facebook_post_2016)) +
+         geom_col() +
+         coord_flip() +
+         scale_y_continuous(breaks = c(1000, 2000, 3000, 4000, 5000, 6000),
+                            labels = c(1, 2, 3, 4, 5, 6)) +
+         labs(title = "Average number of likes per Facebook post",
+              subtitle = "2016, '000",
+              caption = "Source: Facebook") +
+         theme_economist() +
+         theme(axis.title.x = element_blank(),
+               axis.title.y = element_blank()) 
+
+         
+      
+  
+
+```
